@@ -67,7 +67,7 @@ def get_ensemble_similarity_scores(text):
     return ensemble_similarity
 
 def get_sentiment(text):
-    sentences = re.split('\.|\but',text)
+    sentences = re.split('\.|\but|\however',text)
     sentences = [x for x in sentences if x != ""]
     love_message = ""
     hate_message = ""
