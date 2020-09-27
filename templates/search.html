@@ -1,15 +1,36 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
-{% block content %} 
-<form action="/action_page.php">
-    <div class="form-group">
-      <label for="usr">Name:</label>
-      <input type="text" class="form-control" id="usr" name="username">
-    </div>
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd" name="password">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+{% block head %} 
+<script type="text/javascript">
+	$(document).ready(function() {
+
+  const $valueSpan = $('.valueSpan2');
+  const $value = $('#customRange11');
+  $valueSpan.html($value.val());
+  $value.on('input change', () => {
+
+    $valueSpan.html($value.val());
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class='text-block center-element'> 
+<form method="POST">
+	<div class="form-group">
+		<label for="search_query" class="sub-text">Please tell us what kind of perfume you are looking for </label>
+		<textarea class="form-control" rows="5" id="comment" name="search_query"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="range" class="sub-text">How many recommendations do you want? </label>
+	    <div class="d-flex justify-content-center my-4">
+		  <div class="w-75">
+		    <input type="range" class="custom-range" id="customRange11" min="1" max="10" name="range">
+		  </div>
+		  <span class="font-weight-bold text-primary ml-2 valueSpan2"></span>
+		</div>
+		<button type="submit" class="btn btn-primary ">Search</button>
+	</div>
+</form>
+</div>
 {% endblock %}

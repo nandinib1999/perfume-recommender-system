@@ -16,4 +16,4 @@ if args.train_models:
 
 pir.load_models(args.input_data_csv, args.model_dir)
 recommended_perfumes = pir.find_similar_perfumes(args.query_string, args.num_recommendations)
-pir.view_recommendations(recommended_perfumes, args.num_recommendations)
+pir.view_recommendations(recommended_perfumes)

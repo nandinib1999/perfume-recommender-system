@@ -67,7 +67,7 @@ def get_ensemble_similarity_scores(text):
     return ensemble_similarity
 
 def get_sentiment(text):
-    sentences = re.split('\.|\but|\however',text)
+    sentences = re.split('\.|\but|however',text)
     sentences = [x for x in sentences if x != ""]
     love_message = ""
     hate_message = ""
@@ -96,6 +96,7 @@ def get_dissimilarity_scores(text):
 
 
 def find_similar_perfumes(text, n):
+    n = int(n)
     love_message, hate_message = get_sentiment(text)
     similar_perfumes = get_ensemble_similarity_scores(love_message)
     dissimilar_perfumes = get_dissimilarity_scores(hate_message)
@@ -105,24 +106,13 @@ def find_similar_perfumes(text, n):
 
     return similar_perfumes.iloc[:n, :]
 
-def view_recommendations(recommended_perfumes, n):
-    fig, axes = plt.subplots(nrows=1, ncols=n, figsize=(15,10))
-    ax = axes.ravel()
-
-    for i in range(len(recommended_perfumes)):
-        single_title = recommended_perfumes.Name.tolist()[i]
-        single_perfume = df[df['Name']==single_title]
-        name = single_perfume.Name.values[0].encode("ascii", errors="ignore").decode()
-        notes = single_perfume.Notes.values[0].encode("ascii", errors="ignore").decode()
-        title = "{} \n Notes: {}".format(name, notes)
-
-        perfume_image = single_perfume['Image URL'].values[0]
-        image = io.imread(perfume_image)
-        ax[i].imshow(image)
-        ax[i].set_yticklabels([])
-        ax[i].set_xticklabels([])
-        ax[i].set_title("\n".join(wrap(title, 20)))
-        ax[i].axis('off')
-
-    plt.show()
+def details_of_recommendations(recommended_perfumes):
+    details = []
+    for indx, row in recommended_perfumes.iterrows():
+        name = row['Name']
+        notes = df[df['Name'] == name]['Notes'].values[0].encode("ascii", errors="ignore").decode()
+        image_url = df[df['Name'] == name]['Image URL'].values[0]
+        details.append([name, notes, image_url])
+    return details
+        
 
