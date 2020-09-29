@@ -1,22 +1,40 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
 {% block head %} 
+<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 
-  const $valueSpan = $('.valueSpan2');
-  const $value = $('#customRange11');
-  $valueSpan.html($value.val());
-  $value.on('input change', () => {
+	  const $valueSpan = $('.valueSpan2');
+	  const $value = $('#customRange11');
+	  $valueSpan.html($value.val());
+	  $value.on('input change', () => {
 
-    $valueSpan.html($value.val());
-  });
+	    $valueSpan.html($value.val());
+	});
+	});
+
+	$(function() {
+    	$('button').click(function() {
+	        $.ajax({
+	            url: '{{ url_for("get_recommendations") }}',
+	            data: $('form').serialize(),
+	            type: 'POST',
+	            success: function(response) {
+	                console.log(response);
+	            },
+	            error: function(error) {
+	                console.log(error);
+	            }
+	        });
+    });
 });
+
 </script>
 {% endblock %}
 {% block content %}
 <div class='text-block center-element'> 
-<form method="POST">
+<form method="POST" id="perfume_form">
 	<div class="form-group">
 		<label for="search_query" class="sub-text">Please tell us what kind of perfume you are looking for </label>
 		<textarea class="form-control" rows="5" id="comment" name="search_query"></textarea>
@@ -29,8 +47,17 @@
 		  </div>
 		  <span class="font-weight-bold text-primary ml-2 valueSpan2"></span>
 		</div>
-		<button type="submit" class="btn btn-primary ">Search</button>
+		<button type="button" class="btn btn-primary" id="search">Search</button>
 	</div>
 </form>
+<div id="recommendations">
+	{% if recommendations %}
+	<ul>
+      {% for row in recommendations %}
+      <li>{{row}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+</div>
 </div>
 {% endblock %}

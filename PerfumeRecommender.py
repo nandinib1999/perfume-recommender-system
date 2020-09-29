@@ -21,6 +21,7 @@ from sklearn.decomposition import TruncatedSVD
 from scipy import sparse
 
 def load_models(input_data_path='final_perfume_data_temp.csv', model_dir="models"):
+    print('Load models..')
     global doc2vec, tf_idf, svd, svd_feature_matrix, doctovec_feature_matrix, df, sentiment
     doc2vec = Doc2Vec.load(os.path.join(model_dir, "doc2vec_model"))
     tf_idf = pickle.load(open(os.path.join(model_dir, "tf-idf_vectorizer.pkl"), "rb"))
@@ -96,6 +97,7 @@ def get_dissimilarity_scores(text):
 
 
 def find_similar_perfumes(text, n):
+    print(text, n)
     n = int(n)
     love_message, hate_message = get_sentiment(text)
     similar_perfumes = get_ensemble_similarity_scores(love_message)
