@@ -11,7 +11,7 @@ body
   background: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 20px; 
-  width: 50%;
+  width: 75%;
   margin-top: 20px !important;
 }
 
@@ -106,4 +106,38 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     left: 50%;
     margin-left: -5px;
     margin-top: -1px;
+}
+.title-box{
+    background: #E40046;
+    color:#fff;
+    padding: 4px 10px;
+    height: 40px;
+    margin-bottom: 30px;
+    display: flex;
+    display: none;
+}
+.title-box h2{
+    font-size: 24px;
+}
+.title-box::after{
+    content:'';
+    position: absolute;
+    display: flex;
+    margin-top: -4px;
+    margin-left: 170px;
+}
+.product-top img{
+    height: 300px;
+}
+.product-bottom h3{
+    font-size: 17px;
+    font-weight: bold;
+    color:white;
+}
+.product-bottom h5{
+    color:white;
+    font-size: 15px;
+}
+#single-product{
+    padding:3px;
 }

@@ -21,7 +21,20 @@
 	            data: $('form').serialize(),
 	            type: 'POST',
 	            success: function(response) {
-	                console.log(response);
+	            	$('#product').empty();
+	            	var json = JSON.parse(response);
+	            	var perfume_data = json['data'];
+	            	console.log(perfume_data);
+	                $.each(perfume_data, function(index, value) {
+	                	var name = "<h3>"+value[0]+"</h3>";
+	                	var notes = "<h5>"+value[1]+"</h5>";
+	                	var image_src = "<img src='"+value[2]+"' />";
+	                	var product_img = "<div class='product-top text-center' id='productimg'>"+image_src+"</div>";
+	                	var product_details = "<div class='product-bottom text-center' id='producttext'>"+name+notes+"</div>";
+	                	var row = "<div class='col-md-12' id='single-product'>"+product_img+product_details+"</div>";
+	                	$("#product").append(row);
+	                	$("#heading").css("display", "block");
+					});
 	            },
 	            error: function(error) {
 	                console.log(error);
@@ -50,14 +63,14 @@
 		<button type="button" class="btn btn-primary" id="search">Search</button>
 	</div>
 </form>
-<div id="recommendations">
-	{% if recommendations %}
-	<ul>
-      {% for row in recommendations %}
-      <li>{{row}}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-</div>
+<section class="recommends">
+  <div class="container">
+    <div class="col-md-12 title-box" id="heading">
+        <h2>Recommended Perfumes</h2>
+    </div>
+    <div class="row" id="product">
+    </div>
+  </div>
+</section>
 </div>
 {% endblock %}
