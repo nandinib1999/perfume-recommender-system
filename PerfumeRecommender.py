@@ -64,11 +64,12 @@ def get_ensemble_similarity_scores(text):
     ensemble_similarity = pd.merge(doc2vec_similarity, tfidf_similarity, left_index=True, right_index=True)
     ensemble_similarity.columns = ["doc2vec_similarity", "tfidf_similarity"]
     ensemble_similarity['ensemble_similarity'] = (ensemble_similarity["doc2vec_similarity"] + ensemble_similarity["tfidf_similarity"])/2
+    # ensemble_similarity['ensemble_similarity'] = ensemble_similarity['doc2vec_similarity']
     ensemble_similarity.sort_values(by="ensemble_similarity", ascending=False, inplace=True)
     return ensemble_similarity
 
 def get_sentiment(text):
-    sentences = re.split('\.|\but|however',text)
+    sentences = re.split('\.|but|however',text)
     sentences = [x for x in sentences if x != ""]
     love_message = ""
     hate_message = ""
@@ -88,11 +89,12 @@ def get_dissimilarity_scores(text):
 
     tfidf_dissimilarity = get_similarity_scores(tf_idf_embedding, svd_feature_matrix)
     doc2vec_dissimilarity = get_similarity_scores(doct2vec_embedding, doctovec_feature_matrix)
-
     ensemble_dissimilarity = pd.merge(doc2vec_dissimilarity, tfidf_dissimilarity, left_index=True, right_index=True)
     ensemble_dissimilarity.columns = ["doc2vec_dissimilarity", "tfidf_dissimilarity"]
-    ensemble_dissimilarity['ensemble_dissimilarity'] = (ensemble_dissimilarity["doc2vec_dissimilarity"] + ensemble_dissimilarity["tfidf_dissimilarity"])/2
+    # ensemble_dissimilarity['ensemble_dissimilarity'] = (ensemble_dissimilarity["doc2vec_dissimilarity"] + ensemble_dissimilarity['tfidf_dissimilarity'])/2
+    ensemble_dissimilarity['ensemble_dissimilarity'] = ensemble_dissimilarity['doc2vec_dissimilarity']
     ensemble_dissimilarity.sort_values(by="ensemble_dissimilarity", ascending=False, inplace=True)
+    print(ensemble_dissimilarity)
     return ensemble_dissimilarity
 
 
@@ -100,9 +102,14 @@ def find_similar_perfumes(text, n):
     print(text, n)
     n = int(n)
     love_message, hate_message = get_sentiment(text)
+    print("love ", love_message)
+    print("hate ", hate_message)
     similar_perfumes = get_ensemble_similarity_scores(love_message)
+    print(similar_perfumes)
     dissimilar_perfumes = get_dissimilarity_scores(hate_message)
+    # print(dissimilar_perfumes)
     dissimilar_perfumes = dissimilar_perfumes[dissimilar_perfumes['ensemble_dissimilarity'] > .3]
+    print(dissimilar_perfumes)
     similar_perfumes = similar_perfumes.drop(dissimilar_perfumes.index).reset_index()
     similar_perfumes = similar_perfumes.drop_duplicates(subset='Name', keep='first')
 

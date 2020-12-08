@@ -19,8 +19,8 @@ def train_models(input_data_path='final_perfume_data_temp.csv', model_dir="model
 	start_time = time.time()
 	df1 = pd.read_csv(input_data_path, engine='python')
 	df1['Notes'].fillna(' ', inplace=True)
-	df1 = ut.preprocess_columns(df1, "Notes", [ut.make_lower_case, ut.remove_punctuation, ut.stem_words])
-	df1 = ut.preprocess_columns(df1, 'Description', [ut.make_lower_case, ut.remove_punctuation, ut.remove_stop_words, ut.stem_words])
+	df1 = ut.preprocess_columns(df1, "Notes", [ut.make_lower_case, ut.remove_punctuation, ut.rem_numbers, ut.stem_words])
+	df1 = ut.preprocess_columns(df1, 'Description', [ut.make_lower_case, ut.remove_punctuation, ut.decontractions, ut.remove_stop_words, ut.stem_words, ut.fullstops, ut.rem_numbers])
 
 	df1['all_details'] = df1['Description'] + " " + df1['Notes']
 
@@ -75,7 +75,7 @@ def train_models(input_data_path='final_perfume_data_temp.csv', model_dir="model
 
 	formatted_documents = [gensim.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(documents)]
 
-	model = gensim.models.doc2vec.Doc2Vec(vector_size=25, min_count=5, epochs=200, seed=0, window=3, dm=1)
+	model = gensim.models.doc2vec.Doc2Vec(vector_size=512, min_count=5, epochs=1000, seed=0, window=3, dm=1)
 	model.build_vocab(formatted_documents)
 
 	model.train(formatted_documents, total_examples=model.corpus_count, epochs=model.epochs)

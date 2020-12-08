@@ -16,4 +16,10 @@ if args.train_models:
 
 pir.load_models(args.input_data_csv, args.model_dir)
 recommended_perfumes = pir.find_similar_perfumes(args.query_string, args.num_recommendations)
-pir.view_recommendations(recommended_perfumes)
+print(recommended_perfumes)
+recommendations = pir.details_of_recommendations(recommended_perfumes)
+print(len(recommendations))
+for row in recommendations:
+	print(row[0])
+	print(row[1])
+	print(row[2])
