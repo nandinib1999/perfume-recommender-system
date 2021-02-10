@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--train_models", type=bool, default=False, help="Generate pickle weight files")
 parser.add_argument("--model_dir", type=str, default="models", help="Path where models will-be/are stored")
 parser.add_argument("--input_data_csv", type=str, default="final_perfume_data.csv", help="Path to input csv file with perfume data")
-parser.add_argument("--query_string", type=str, default="Suggest me something with sandalwood, cinnamon and florals.", help="Query string for searching perfumes")
+parser.add_argument("--query_string", type=str, default="I want something with jasmine, vanilla and cedar but I do not want tobacco", help="Query string for searching perfumes")
 parser.add_argument("--num_recommendations", type=int, default=5, help="Number of perfumes to be recommended.")
 args = parser.parse_args()
 
